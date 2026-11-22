@@ -5,6 +5,10 @@ if (document.documentElement.classList.contains('js')) {
   'use strict';
   var D = document;
   function $$(s, r) { return [].slice.call((r || D).querySelectorAll(s)); }
+  // where the Designer did not keep an element's data-v, give it the motion role its class stands for
+  /*VMAP*/[[".t-acts", "acts"], [".t-acts-2", "acts"], [".t-chip", "chip"], [".t-close", "close"], [".t-cols", "cols"], [".t-crumbs", "crumbs"], [".t-cta-dark", "cta"], [".t-cta-dark-flow", "cta rv"], [".t-cta-flow", "cta"], [".t-cta-flow-2", "cta"], [".t-cta-flow-3", "cta"], [".t-ft", "ft"], [".t-hd", "hd"], [".t-hero", "hero"], [".t-intro", "intro rv"], [".t-lede-serif", "lede"], [".t-menu-btn", "menu-btn"], [".t-stk .t-meta", "meta"], [".t-meta", "rv"], [".t-n", "n"], [".t-sec", "sec"], [".t-sec-head-h2", "rv"], [".t-sec-white", "sec"], [".t-sheet", "sheet"], [".t-spec", "spec"], [".t-spec-scroll", "rv spec-scroll"], [".t-stack", "stack"], [".t-stk", "stk"], [".t-stk-list", "stk-list"], [".t-stk-ph", "stk-ph"], [".t-stk-tx", "stk-tx"], [".t-txt", "txt"], [".t-wrap", "wrap"], [".t-wrap-2", "wrap"], [".t-wrap-3", "wrap"], [".t-x", "x"]].forEach(function (r) {
+    $$(r[0]).forEach(function (e) { if (!e.hasAttribute('data-v')) e.setAttribute('data-v', r[1]); });
+  });
   $$('[data-vs]').forEach(function (e) { e.style.cssText += ';' + e.getAttribute('data-vs'); });
   $$('[data-v~="stk"]').forEach(function (c, i) { if (!c.style.getPropertyValue('--k')) c.style.setProperty('--k', i); });
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
