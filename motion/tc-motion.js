@@ -1,3 +1,4 @@
+if (document.documentElement.classList.contains('js')) {
 /* Trimcraft motion for the Webflow build: the same motion code as the original site.
    Elements carry their original class names in data-v; inline custom properties travel in data-vs. */
 (function () {
@@ -305,3 +306,4 @@
   function frame() { if (dirty) { dirty = false; ticks.forEach(function (t) { t(); }); } requestAnimationFrame(frame); }
   requestAnimationFrame(frame);
 })();
+}
