@@ -1131,6 +1131,6 @@ html.tc3d.tc3d-fade .tc3d-root{visibility:visible;opacity:1;z-index:2147483000;t
 html.tc3d.tc3d-on .tc3d-root{position:relative;top:auto;left:auto;right:auto;height:auto;overflow:visible;visibility:visible;opacity:1;pointer-events:auto;z-index:auto;transition:none}
 html.tc3d-on .site-chrome,
 html.tc3d-on .home-main > :not(.home-lower){display:none!important}
-/* the lower native sections sit under the fixed 3D header */
-html.tc3d-on .home-lower{position:relative}
+/* the lower native sections and footer scroll over the fixed 3D stage, under its header (like the original main) */
+html.tc3d-on .home-lower,html.tc3d-on .site-footer{position:relative;z-index:5}
 @media (prefers-reduced-motion:reduce){html.tc3d.tc3d-fade .tc3d-root{transition:none}}
