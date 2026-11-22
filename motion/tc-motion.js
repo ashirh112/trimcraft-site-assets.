@@ -11,6 +11,15 @@ if (document.documentElement.classList.contains('js')) {
   });
   // text pieces the Designer keeps as divs go back to their original tags
   $$('[data-v~="ht-count"]>div').forEach(function (d) { var b = D.createElement('b'); b.className = d.className; b.textContent = d.textContent; d.replaceWith(b, ' '); });
+  // more brand stories: each card opens its brand, the brand on this page is left out, three stay
+  $$('[data-v~="more"]').forEach(function (w) {
+    var me = location.pathname.replace(/\/$/, ''), kept = 0;
+    $$('.w-dyn-item', w).forEach(function (it) {
+      var a = it.querySelector('a[data-slug]'), p = a ? '/work/' + a.getAttribute('data-slug') : '';
+      if (a) a.setAttribute('href', p);
+      if (p === me || kept >= 3) it.parentNode.removeChild(it); else kept++;
+    });
+  });
   // quote buttons on product pages open the quote form with the product filled in
   $$('a[data-q]').forEach(function (a) { a.setAttribute('href', a.getAttribute('href').split('?')[0] + '?product=' + encodeURIComponent(a.getAttribute('data-q'))); });
   // the quote form picks up the product named in the link
