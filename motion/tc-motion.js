@@ -11,6 +11,13 @@ if (document.documentElement.classList.contains('js')) {
   });
   // quote buttons on product pages open the quote form with the product filled in
   $$('a[data-q]').forEach(function (a) { a.setAttribute('href', a.getAttribute('href').split('?')[0] + '?product=' + encodeURIComponent(a.getAttribute('data-q'))); });
+  // the quote form picks up the product named in the link
+  var qp = new URLSearchParams(location.search).get('product'), qs = D.querySelector('select[name="Product"]');
+  if (qp && qs) {
+    var hit = [].filter.call(qs.options, function (o) { return o.text.toLowerCase() === qp.toLowerCase(); })[0];
+    if (!hit) { hit = new Option(qp, qp); qs.insertBefore(hit, qs.options[1] || null); }
+    qs.value = hit.value || hit.text; hit.selected = true;
+  }
   $$('[data-vs]').forEach(function (e) { e.style.cssText += ';' + e.getAttribute('data-vs'); });
   $$('[data-v~="stk"]').forEach(function (c, i) { if (!c.style.getPropertyValue('--k')) c.style.setProperty('--k', i); });
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
