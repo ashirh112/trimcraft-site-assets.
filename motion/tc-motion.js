@@ -212,11 +212,10 @@ if (document.documentElement.classList.contains('js')) {
   // ---- pinned sequence: the page holds still while the steps change one by one ----
   $$('[data-v~="seq"]').forEach(function (sq) {
     var ms = $$('[data-v~="seq-m"]', sq), ts = $$('[data-v~="seq-t"]', sq), lis = $$('[data-v~="seq-rail"] li', sq), knob = sq.querySelector('[data-v~="seq-knob"]'), cur = sq.querySelector('[data-v~="seq-cur"]'), n = ts.length, act = -1;
+    // the native interaction switches the steps; the knob, the counter and the screen reader state follow it here
     function set(k) {
       if (k === act) return; var prev = act; act = k;
-      ms.forEach(function (m, i) { m.classList.toggle('on', i === k); m.classList.toggle('past', i < k); });
-      ts.forEach(function (t, i) { t.classList.toggle('on', i === k); t.classList.toggle('past', i < k); t.setAttribute('aria-hidden', i !== k); });
-      lis.forEach(function (l, i) { l.classList.toggle('on', i === k); });
+      ts.forEach(function (t, i) { t.setAttribute('aria-hidden', i !== k); });
       if (knob && lis[k]) {
         var lr = lis[k].getBoundingClientRect(), tr = knob.parentNode.getBoundingClientRect();
         knob.style.translate = (lr.left - tr.left) + 'px 0';
@@ -233,10 +232,9 @@ if (document.documentElement.classList.contains('js')) {
     }, true);
     if (location.hash && wide.matches) setTimeout(function () { var k = ts.findIndex(function (t) { return '#' + t.id === location.hash; }); if (k > -1) scrollTo(0, posFor(k)); }, 60);
     ticks.push(function () {
-      if (!wide.matches) { if (act !== -2) { act = -2; ms.concat(ts).forEach(function (x) { x.classList.remove('on', 'past'); x.removeAttribute('aria-hidden'); }); } return; }
+      if (!wide.matches) { if (act !== -2) { act = -2; ts.forEach(function (x) { x.removeAttribute('aria-hidden'); }); } return; }
       var r = sq.getBoundingClientRect(); if (r.bottom < -100 || r.top > innerHeight + 100) { if (act < 0) set(0); return; }
       var p = cl(-r.top / (r.height - innerHeight));
-      sq.style.setProperty('--p', p.toFixed(4));
       set(Math.min(n - 1, Math.floor(p * n)));
     });
   });
