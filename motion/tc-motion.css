@@ -30,7 +30,6 @@ html.js.leaving body::before{animation:tcfade .3s var(--o) .25s both}
 .w>span{display:inline-block;will-change:transform}
 html.js [data-v~="hero"]::after{animation:tcnestin 1.6s var(--o) .6s both,tcdrift 60s linear 2.2s infinite}
 /* the headline keeps a slow float and leans away from the cursor, as on the home page */
-[data-v~="hero"] h1,[data-v~="hero"] [data-v~="lede"]{transform:translate3d(calc(var(--px,0) * -12px),calc(var(--py,0) * -8px),0);transition:transform .9s cubic-bezier(.2,.7,.2,1)}
 [data-v~="hero"] h1{animation:tchov 7s ease-in-out 2.4s infinite}
 
 /* ---------- hover and touch ---------- */
@@ -74,7 +73,6 @@ html.js [data-v~="hero"]::after{animation:tcnestin 1.6s var(--o) .6s both,tcdrif
 @media (prefers-reduced-motion:reduce){
   html.js body::after,html.js body::before{display:none}
   html.js [data-v~="hd"],html.js [data-v~="hero"] [data-v~="crumbs"],html.js [data-v~="hero"] h1 .w>span,html.js [data-v~="hero"] [data-v~="lede"],html.js [data-v~="hero"] [data-v~="acts"],html.js [data-v~="hero-split"] [data-v~="wrap"]>[data-v~="ph"],html.js [data-v~="hero-split"] [data-v~="wrap"]>[data-v~="ph"] img,html.js [data-v~="hero"]::after,[data-v~="hero"] h1{animation:none!important}
-  [data-v~="hero"] h1,[data-v~="hero"] [data-v~="lede"]{transform:none!important}
   [data-v~="hd"] nav a,[data-v~="cta"],a[data-v~="chip"],[data-v~="filters"] button,[data-v~="ft"] a,[data-v~="txt"],[data-v~="crumbs"] a{scale:1!important;translate:none!important}
 }
 

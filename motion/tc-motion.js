@@ -150,11 +150,6 @@ if (document.documentElement.classList.contains('js')) {
   function frame() {
     var vh = innerHeight, writes = [];
     if (fine) {
-      var ease = Math.abs(tx - mx) + Math.abs(ty - my) > .001;
-      if (ease) {
-        mx += (tx - mx) * .06; my += (ty - my) * .06;
-        heroes.forEach(function (h) { writes.push([h, '--px', mx.toFixed(3)], [h, '--py', my.toFixed(3)]); });
-      }
       if (moved || scrolled) {
         magVis.forEach(function (el) {
           var r = el.getBoundingClientRect(); if (!r.width) return;
