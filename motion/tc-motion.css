@@ -1,6 +1,3 @@
-[data-v~="rv"]{opacity:0;transform:translate3d(0,18px,0);transition:opacity .6s var(--ease),transform .6s var(--ease)}
-[data-v~="rv"].in{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){[data-v~="rv"]{opacity:1;transform:none;transition:none}}
 :root{--navy:#172B46;--void:#0E1C30;--paper:#F3F0E9;--copper:#B66A43;--slate:#444D57;--white:#fff;--pad:clamp(22px,4.2vw,72px);--max:1320px;--rule:rgba(23,43,70,.12);--ease:cubic-bezier(.23,1,.32,1)}
 /* Trimcraft inner pages: motion. The same language as the home page: things float in from below,
    shed a soft blur and settle; headlines rise out of a mask word by word; buttons lean toward the cursor
@@ -36,34 +33,6 @@ html.js [data-v~="hero"]::after{animation:tcnestin 1.6s var(--o) .6s both,tcdrif
 [data-v~="hero"] h1,[data-v~="hero"] [data-v~="lede"]{transform:translate3d(calc(var(--px,0) * -12px),calc(var(--py,0) * -8px),0);transition:transform .9s cubic-bezier(.2,.7,.2,1)}
 [data-v~="hero"] h1{animation:tchov 7s ease-in-out 2.4s infinite}
 
-/* ---------- on scroll: float in, shed the blur, settle ---------- */
-html.js [data-v~="rv"]{opacity:0;transform:translate3d(0,56px,0) scale(.97);
-  transition:opacity .9s var(--o),transform 1.25s var(--o),filter .9s var(--o)}
-/* the soft blur only on text, where it is cheap; photos and cards just float */
-html.js h2[data-v~="rv"],html.js p[data-v~="rv"],html.js [data-v~="intro"][data-v~="rv"],html.js [data-v~="faq"][data-v~="rv"],html.js [data-v~="prose"][data-v~="rv"]{filter:blur(6px)}
-html.js [data-v~="rv"].in{opacity:1;transform:none;filter:none}
-html.js [data-v~="card"][data-v~="rv"]{transform:translate3d(0,72px,0) rotate(-1.4deg) scale(.96);transform-origin:0 100%}
-html.js [data-v~="card"][data-v~="rv"].in{transform:none}
-/* photos open from the bottom edge and ease back from a closer crop */
-html.js [data-v~="rv"] [data-v~="ph"],html.js [data-v~="ph"][data-v~="rv"]{clip-path:inset(22% 0 0 0);transition:clip-path 1.3s var(--io)}
-html.js [data-v~="rv"].in [data-v~="ph"],html.js [data-v~="ph"][data-v~="rv"].in{clip-path:inset(0 0 0 0)}
-html.js [data-v~="rv"] [data-v~="ph"] img,html.js [data-v~="ph"][data-v~="rv"] img{scale:1.28;transition:scale 1.8s var(--o)}
-html.js [data-v~="rv"].in [data-v~="ph"] img,html.js [data-v~="ph"][data-v~="rv"].in img{scale:var(--rest,1)}
-[data-v~="ph"] img.plx{--rest:1.1}
-/* section headlines rise word by word */
-html.js [data-v~="rv"] .w>span,html.js [data-v~="rv"].w-host .w>span{transform:translate3d(0,108%,0) rotate(4deg);transition:transform 1.1s var(--o);transition-delay:calc(var(--i) * 55ms + .1s)}
-html.js [data-v~="rv"].in .w>span{transform:none}
-html.js [data-v~="close"] h2 .w>span{transform:translate3d(0,108%,0) rotate(4deg);transition:transform 1.1s var(--o);transition-delay:calc(var(--i) * 55ms)}
-html.js [data-v~="close"].m-in h2 .w>span{transform:none}
-html.js [data-v~="close"] [data-v~="acts"],html.js [data-v~="close"] p{opacity:0;transform:translate3d(0,30px,0);transition:opacity .9s var(--o) .35s,transform 1.2s var(--o) .35s}
-html.js [data-v~="close"].m-in [data-v~="acts"],html.js [data-v~="close"].m-in p{opacity:1;transform:none}
-
-/* groups: rows, steps, numbers, chips, filters and footer columns settle one after another */
-html.js .m-g>*{opacity:0;transform:translate3d(0,24px,0);transition:opacity .7s var(--o),transform 1s var(--o);transition-delay:calc(min(var(--i),14) * 45ms + .12s)}
-html.js .m-g.m-x>*{transform:translate3d(-34px,0,0)}
-html.js .m-g.m-pop>*{transform:translate3d(0,10px,0) scale(.82)}
-html.js .m-g.m-in>*{opacity:1;transform:none}
-
 /* ---------- hover and touch ---------- */
 @media (hover:hover) and (pointer:fine){
   a[data-v~="card"]{transition:translate .6s var(--o)}
@@ -71,8 +40,7 @@ html.js .m-g.m-in>*{opacity:1;transform:none}
   a[data-v~="card"] [data-v~="ph"]{transition:box-shadow .6s var(--o),clip-path 1.3s var(--io)}
   a[data-v~="card"]:hover [data-v~="ph"]{box-shadow:0 30px 50px -30px rgba(23,43,70,.55)}
   a[data-v~="card"] [data-v~="ph"] img{transition:scale 1.8s var(--o)}
-  html.js a[data-v~="card"].in:hover [data-v~="ph"] img,a[data-v~="card"]:hover [data-v~="ph"] img{scale:1.07;transition-duration:.9s}
-  [data-v~="card"] [data-v~="ph"] img{transform:none!important}
+  a[data-v~="card"]:hover [data-v~="ph"] img{scale:1.07;transition-duration:.9s}
 }
 /* things you can click lean toward the cursor and grow a little as it nears */
 [data-v~="hd"] nav a,[data-v~="cta"],a[data-v~="chip"],[data-v~="filters"] button,[data-v~="ft"] a,[data-v~="txt"],[data-v~="crumbs"] a{scale:var(--mz,1);translate:var(--mx,0) var(--my,0);transition:scale .35s cubic-bezier(.2,.7,.2,1),translate .35s cubic-bezier(.2,.7,.2,1),background .18s var(--o),color .3s,box-shadow .18s var(--o)}
@@ -106,9 +74,6 @@ html.js .m-g.m-in>*{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){
   html.js body::after,html.js body::before{display:none}
   html.js [data-v~="hd"],html.js [data-v~="hero"] [data-v~="crumbs"],html.js [data-v~="hero"] h1 .w>span,html.js [data-v~="hero"] [data-v~="lede"],html.js [data-v~="hero"] [data-v~="acts"],html.js [data-v~="hero-split"] [data-v~="wrap"]>[data-v~="ph"],html.js [data-v~="hero-split"] [data-v~="wrap"]>[data-v~="ph"] img,html.js [data-v~="hero"]::after,[data-v~="hero"] h1{animation:none!important}
-  html.js [data-v~="rv"],html.js [data-v~="card"][data-v~="rv"],html.js .m-g>*,html.js [data-v~="rv"] .w>span,html.js [data-v~="close"] h2 .w>span,html.js [data-v~="close"] [data-v~="acts"],html.js [data-v~="close"] p{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
-  html.js [data-v~="rv"] [data-v~="ph"],html.js [data-v~="ph"][data-v~="rv"]{clip-path:none!important}
-  html.js [data-v~="rv"] [data-v~="ph"] img,html.js [data-v~="ph"][data-v~="rv"] img{scale:1!important;transition:none!important}
   [data-v~="hero"] h1,[data-v~="hero"] [data-v~="lede"]{transform:none!important}
   [data-v~="hd"] nav a,[data-v~="cta"],a[data-v~="chip"],[data-v~="filters"] button,[data-v~="ft"] a,[data-v~="txt"],[data-v~="crumbs"] a{scale:1!important;translate:none!important}
 }
@@ -223,16 +188,11 @@ html.js .m-g.m-in>*{opacity:1;transform:none}
   html.js [data-v~="stk"]{position:relative!important;scale:1!important}
   html.js [data-v~="ht"]{padding:110px 0}html.js [data-v~="ht-stage"]{position:static;height:auto}html.js [data-v~="ht-track"]{overflow-x:auto;transform:none!important}
 }
-html.js [data-v~="stk-tx"] .w>span{transform:translate3d(0,108%,0) rotate(4deg);transition:transform 1.1s var(--o);transition-delay:calc(var(--i) * 60ms + .2s)}
-html.js [data-v~="stk-tx"].m-in .w>span{transform:none}
-html.js [data-v~="stk-ph"] img{scale:1.18;opacity:0;transition:scale 1.6s var(--o),opacity .9s var(--o)}
-html.js [data-v~="stk"].m-in [data-v~="stk-ph"] img{scale:1;opacity:1}
 @media (prefers-reduced-motion:reduce){
   html.js [data-v~="seq-grid"]{display:block}html.js [data-v~="seq-media"],html.js [data-v~="seq-rail"]{display:none}
   html.js [data-v~="seq-t"]{position:static;opacity:1;transform:none;filter:none;translate:none;padding:40px 0;border-top:1px solid var(--rule)}
   html.js [data-v~="seq-mob"]{display:block;aspect-ratio:3/2;margin-bottom:20px}[data-v~="seq-mob"] img{width:100%;height:100%;object-fit:cover}
-  html.js [data-v~="seq-t"] .w>span,html.js [data-v~="stk-tx"] .w>span{transform:none!important}
-  html.js [data-v~="stk-ph"] img{scale:1!important;opacity:1!important}
+  html.js [data-v~="seq-t"] .w>span{transform:none!important}
 }
 [data-v~="seq-yr"]{display:none}
 @media (max-width:860px){[data-v~="seq-yr"]{display:block;font-size:64px;font-weight:800;letter-spacing:-.04em;line-height:1;color:var(--navy);margin-bottom:10px}}

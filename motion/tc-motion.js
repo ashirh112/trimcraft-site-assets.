@@ -40,19 +40,6 @@ if (document.documentElement.classList.contains('js')) {
     var x = sh.querySelector('[data-v~="x"]'); x && x.addEventListener('click', function (e) { e.preventDefault(); open(false); });
     addEventListener('keydown', function (e) { if (e.key === 'Escape' && sh.classList.contains('open')) open(false); });
   }
-  // reveal on scroll, a short stagger inside each group
-  var els = $$('[data-v~="rv"]');
-  if (reduce || !('IntersectionObserver' in window)) els.forEach(function (e) { e.classList.add('in'); });
-  else {
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        var e = en.target, sib = e.parentNode ? [].slice.call(e.parentNode.children).filter(function (x) { return x.matches('[data-v~="rv"]'); }) : [e];
-        e.style.transitionDelay = Math.min(240, sib.indexOf(e) * 50) + 'ms'; e.classList.add('in'); io.unobserve(e);
-      });
-    }, { rootMargin: '0px 0px -8% 0px' });
-    els.forEach(function (e) { io.observe(e); });
-  }
   // work library filters
   var fl = D.querySelector('[data-v~="filters"]'), lib = D.querySelector('[data-v~="lib"]');
   if (fl && lib) fl.addEventListener('click', function (e) {
@@ -67,7 +54,7 @@ if (document.documentElement.classList.contains('js')) {
   });
 })();
 /* Trimcraft inner pages: motion. Headline words, button fills, cursor lean, page veil,
-   staggered groups, counting numbers, photo parallax and the work library shuffle. */
+   counting numbers, photo parallax and the work library shuffle. */
 (function () {
   'use strict';
   var D = document, H = D.documentElement;
@@ -77,7 +64,7 @@ if (document.documentElement.classList.contains('js')) {
   function esc(t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
 
   // headlines: each word in its own mask, so it can rise into place
-  $$('[data-v~="sec"] h2, [data-v~="chap"] h2, [data-v~="close"] h2, [data-v~="seq-t"] h2, [data-v~="stk"] h2, [data-v~="ht"] h2').forEach(function (el) {
+  $$('[data-v~="chap"] h2, [data-v~="seq-t"] h2').forEach(function (el) {
     if (el.children.length || el.dataset.split) return;
     var t = el.textContent.trim(); if (!t) return;
     el.dataset.split = 1; el.setAttribute('aria-label', t);
@@ -99,17 +86,6 @@ if (document.documentElement.classList.contains('js')) {
     $$('.fb-a', a).forEach(function (s) { var g = s.firstChild; g.setAttribute('class', 'fb-a ' + (s.classList.contains('l') ? 'l' : 'r')); s.replaceWith(g); });
   });
 
-  // groups that settle one item after another
-  function group(el, kind) { if (!el || el.classList.contains('m-g')) return; el.classList.add('m-g'); if (kind) el.classList.add(kind); [].forEach.call(el.children, function (c, i) { c.style.setProperty('--i', i); }); }
-  $$('[data-v~="spec"] [data-v~="tbody"]').forEach(function (e) { group(e, 'm-x'); });
-  $$('[data-v~="steps"]').forEach(function (e) { group(e, 'm-x'); });
-  $$('[data-v~="stats"], [data-v~="contact-list"], [data-v~="ft"] [data-v~="cols"]').forEach(function (e) { group(e); });
-  $$('[data-v~="meta"], [data-v~="filters"]').forEach(function (e) { if (!e.closest('[data-v~="seq"], [data-v~="ht"]')) group(e, 'm-pop'); });
-  $$('[data-v~="seq-t"] [data-v~="meta"]').forEach(function (e) { [].forEach.call(e.children, function (c, i) { c.style.setProperty('--i', i); }); });
-  $$('[data-v~="stk-tx"]').forEach(function (e) { group(e); });
-  $$('div').forEach(function (d) { if (d.closest('[data-v~="seq"], [data-v~="ht"], [data-v~="stk"]')) return; if (d.children.length > 2 && d.querySelectorAll(':scope>[data-v~="chip"]').length === d.children.length) group(d, 'm-pop'); });
-  var groups = $$('.m-g, [data-v~="close"], [data-v~="stk"]');
-
   // numbers count up when they come into view
   var nums = $$('[data-v~="stats"] b').map(function (b) {
     var m = b.textContent.match(/^([\d,]*\.?\d+)(.*)$/); if (!m) return null;
@@ -124,17 +100,13 @@ if (document.documentElement.classList.contains('js')) {
     (function step(t) { var p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(2, -10 * p); o.b.textContent = fmt(p >= 1 ? o.v : o.v * e, o); if (p < 1) requestAnimationFrame(step); })(t0);
   }
 
-  if (reduce || !('IntersectionObserver' in window)) {
-    groups.forEach(function (g) { g.classList.add('m-in'); });
-  } else {
+  // the native group reveal moves the stats; the numbers start counting as the row comes into view
+  if (!reduce && 'IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (es) {
-      es.forEach(function (en) {
-        if (!en.isIntersecting) return; var g = en.target; g.classList.add('m-in'); io.unobserve(g);
-        nums.forEach(function (o) { if (g.contains(o.b)) count(o); });
-      });
+      es.forEach(function (en) { if (!en.isIntersecting) return; io.unobserve(en.target); nums.forEach(function (o) { if (en.target.contains(o.b)) count(o); }); });
     }, { rootMargin: '0px 0px -10% 0px' });
-    groups.forEach(function (g) { io.observe(g); });
-    nums.forEach(function (o) { var g = o.b.closest('.m-g'); if (!g) io.observe(o.b.parentNode); });
+    var rows = []; nums.forEach(function (o) { var g = o.b.closest('[data-v~="stats"]') || o.b.parentNode; if (rows.indexOf(g) < 0) rows.push(g); });
+    rows.forEach(function (g) { io.observe(g); });
   }
 
   if (reduce) return;
