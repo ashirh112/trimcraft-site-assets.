@@ -154,7 +154,6 @@ html.js [data-v~="hero"]::after{animation:tcnestin 1.6s var(--o) .6s both,tcdrif
 [data-v~="stk-list"]{list-style:none;display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px;font-weight:600;color:var(--slate)}
 [data-v~="stk-list"] li::before{content:"·";margin-right:8px;color:var(--copper)}
 [data-v~="stk"] [data-v~="cta"]{align-self:flex-start;margin-top:10px}
-[data-v~="stk"]::after{content:"";position:absolute;inset:0;background:var(--void);opacity:var(--dim,0);pointer-events:none;border-radius:inherit}
 [data-v~="stk"]{position:relative}
 @media (hover:hover) and (pointer:fine){[data-v~="stk"]:hover [data-v~="stk-ph"] img{scale:1.06}}
 @media (min-width:761px){html.js [data-v~="stk"]{position:sticky;top:calc(96px + var(--k) * 16px)}}

@@ -54,7 +54,7 @@ if (document.documentElement.classList.contains('js')) {
   });
 })();
 /* Trimcraft inner pages: motion. Headline words, button fills, cursor lean, page veil,
-   counting numbers, photo parallax and the work library shuffle. */
+   counting numbers and the work library shuffle. */
 (function () {
   'use strict';
   var D = document, H = D.documentElement;
@@ -133,18 +133,11 @@ if (document.documentElement.classList.contains('js')) {
   }
   D.addEventListener('pointerover', prefetch, { passive: true }); D.addEventListener('touchstart', prefetch, { passive: true });
 
-  // photo parallax: big photos drift a little slower than the page
-  var plx = $$('[data-v~="chap"] [data-v~="ph"] img, [data-v~="ph"][data-v~="wide"] img, [data-v~="person"] [data-v~="ph"] img, [data-v~="hero-split"] [data-v~="wrap"]>[data-v~="ph"] img').filter(function (i) {
-    return !/\/(c-|lib\/|inlay|cert-|tags\/)/.test(i.getAttribute('src') || '');
-  });
-  plx.forEach(function (i) { i.classList.add('plx'); });
-  $$('[data-v~="hero-split"] [data-v~="wrap"]>[data-v~="ph"] img').forEach(function (i) { if (!i.classList.contains('plx')) i.style.setProperty('--rest', 1); });
   function watch(list, set) {
     if (!list.length) return;
     var o = new IntersectionObserver(function (es) { es.forEach(function (en) { en.isIntersecting ? set.add(en.target) : set.delete(en.target); }); }, { rootMargin: '10% 0px' });
     list.forEach(function (x) { o.observe(x); });
   }
-  var vis = new Set(); watch(plx, vis);
   var heroes = $$('[data-v~="hero"]'), mx = 0, my = 0, tx = 0, ty = 0;
 
   // things you can click lean toward the cursor (only the ones on screen are measured)
@@ -156,9 +149,6 @@ if (document.documentElement.classList.contains('js')) {
 
   function frame() {
     var vh = innerHeight, writes = [];
-    if (scrolled) {
-      vis.forEach(function (i) { var r = i.parentNode.getBoundingClientRect(); writes.push([i, 'translate', '0 ' + ((r.top + r.height / 2 - vh / 2) / vh * -6).toFixed(2) + '%']); });
-    }
     if (fine) {
       var ease = Math.abs(tx - mx) + Math.abs(ty - my) > .001;
       if (ease) {
@@ -176,7 +166,7 @@ if (document.documentElement.classList.contains('js')) {
       }
     }
     // all measuring above, all writing here, so the browser lays the page out once per frame
-    for (var w = 0; w < writes.length; w++) { var x = writes[w]; if (x[1] === 'translate') x[0].style.translate = x[2]; else x[0].style.setProperty(x[1], x[2]); }
+    for (var w = 0; w < writes.length; w++) { var x = writes[w]; x[0].style.setProperty(x[1], x[2]); }
     scrolled = moved = false;
     requestAnimationFrame(frame);
   }
@@ -249,20 +239,6 @@ if (document.documentElement.classList.contains('js')) {
       sq.style.setProperty('--p', p.toFixed(4));
       set(Math.min(n - 1, Math.floor(p * n)));
     });
-  });
-
-  // ---- stacking cards: each card pins, the next slides over it and the one beneath sinks back ----
-  var stks = $$('[data-v~="stk"]');
-  if (stks.length) ticks.push(function () {
-    if (!wide.matches) { stks.forEach(function (c) { c.style.scale = ''; c.style.removeProperty('--dim'); }); return; }
-    for (var i = 0; i < stks.length; i++) {
-      var c = stks[i], nx = stks[i + 1];
-      if (!nx) { c.style.scale = ''; c.style.setProperty('--dim', 0); continue; }
-      var r = c.getBoundingClientRect(), nr = nx.getBoundingClientRect();
-      var cov = cl(1 - (nr.top - r.top) / r.height);
-      c.style.scale = (1 - cov * .07).toFixed(4);
-      c.style.setProperty('--dim', (cov * .38).toFixed(3));
-    }
   });
 
   // ---- pinned horizontal track: scrolling down carries the row sideways, new cards arc in from the right ----
