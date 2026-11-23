@@ -29,6 +29,9 @@ if (document.documentElement.classList.contains('js')) {
     if (!hit) { hit = new Option(qp, qp); qs.insertBefore(hit, qs.options[1] || null); }
     qs.value = hit.value || hit.text; hit.selected = true;
   }
+  // forms: the file picker gets a spoken name, radio pills get their own ids
+  $$('input[type=file]:not([aria-label])').forEach(function (f) { f.setAttribute('aria-label', 'Artwork file'); });
+  $$('input[type=radio][id="radio"]').forEach(function (r, i) { r.id = 'tc-opt-' + (i + 1); });
   $$('[data-vs]').forEach(function (e) { e.style.cssText += ';' + e.getAttribute('data-vs'); });
   $$('[data-v~="stk"]').forEach(function (c, i) { if (!c.style.getPropertyValue('--k')) c.style.setProperty('--k', i); });
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
