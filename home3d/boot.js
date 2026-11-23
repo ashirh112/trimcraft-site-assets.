@@ -7,6 +7,10 @@
   'use strict';
   var cur = document.currentScript;
   var B = (cur && cur.getAttribute('data-base')) || '';
+  // app.js can come from a newer commit than the photos and styles (data-code), so a code-only update does not make
+  // every photo a first-time download from the file host
+  var CODE = (cur && cur.getAttribute('data-code')) || B;
+  function src(f) { return (f === 'app.js' ? CODE : B) + f; }
   var D = document, H = D.documentElement, W = window;
   function lift() {
     if (!H.classList.contains('tc3d-hold')) return;
@@ -36,7 +40,7 @@
   // every script starts downloading now, side by side; they still run one after another, in order, from the cache
   SCRIPTS.forEach(function (f) {
     var l = D.createElement('link');
-    l.rel = 'preload'; l.as = 'script'; l.href = B + f;
+    l.rel = 'preload'; l.as = 'script'; l.href = src(f);
     D.head.appendChild(l);
   });
 
@@ -138,7 +142,7 @@
   function load(i, end) {
     if (i >= SCRIPTS.length) return end();
     var s = D.createElement('script');
-    s.src = B + SCRIPTS[i];
+    s.src = src(SCRIPTS[i]);
     s.async = false;
     s.onload = function () { load(i + 1, end); };
     s.onerror = abort;
