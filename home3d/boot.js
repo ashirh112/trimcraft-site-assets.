@@ -129,7 +129,27 @@
       H.classList.add('tc3d-on');
       H.classList.remove('tc3d-fade', 'tc3d-hold', 'tc3d-lift');
       W.dispatchEvent(new Event('resize'));
+      if (coarse) tint();
     }, 480);
+  }
+
+  /* Phones colour the strip under the browser bars from the page background, not from the 3D scene. While the scene
+     is on screen the page background follows the scene's own background (navy, paper, ...), so that strip always
+     matches; past the scene the page's own colours come back. */
+  function tint() {
+    var last = '', queued = false;
+    function run() {
+      queued = false;
+      var c = W.__tcHF, inScene = root && W.scrollY < root.offsetHeight - (W.innerHeight || 0) * 0.5;
+      var v = c && inScene ? '#' + c.getHexString() : '';
+      if (v === last) return;
+      last = v;
+      H.style.backgroundColor = v; D.body.style.backgroundColor = v;
+    }
+    function q() { if (!queued) { queued = true; requestAnimationFrame(run); } }
+    W.addEventListener('scroll', q, { passive: true });
+    var idle; W.addEventListener('scroll', function () { clearTimeout(idle); idle = setTimeout(q, 160); }, { passive: true });
+    run(); setTimeout(q, 900);
   }
 
   function start() {
