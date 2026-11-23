@@ -94,6 +94,22 @@
     ['wheel', 'scroll', 'keydown', 'touchmove', 'pointerdown'].forEach(function (t) {
       W.addEventListener(t, function () { lastInput = performance.now(); }, { passive: true });
     });
+    // work that would freeze a frame (drawing a finished photo into its card) waits for a quiet moment; while you
+    // keep scrolling, one item still goes through every 1.2 s so nothing waits for ever
+    var gate = [], pumping = false, lastRun = 0;
+    function pump() {
+      if (!gate.length) { pumping = false; return; }
+      var now = performance.now();
+      if (now - lastInput < 300 && now - lastRun < 1200) { setTimeout(pump, 120); return; }
+      lastRun = now;
+      try { gate.shift()(); } catch (e) {}
+      if (W.requestIdleCallback) requestIdleCallback(pump, { timeout: 300 }); else setTimeout(pump, 50);
+    }
+    W.__tcGate = function (fn) {
+      if (!W.__tcRevealAt) return fn();
+      gate.push(fn);
+      if (!pumping) { pumping = true; setTimeout(pump, 0); }
+    };
     W.__tcQueue = function () {
       var lastForced = performance.now();
       function step() {

@@ -1155,3 +1155,6 @@ html.tc3d-touch .tc3d-root .stage{bottom:auto;height:100vh;height:100svh}
 html.tc3d-touch .tc3d-root .loader,html.tc3d-touch .tc3d-root .tc-pg,html.tc3d-touch .tc3d-root .tc-veil{bottom:auto;height:100vh;height:100lvh}
 html.tc3d-touch.tc3d-fade body>:not(.tc3d-root){visibility:hidden}
 html.tc3d-touch.tc3d-fade,html.tc3d-touch.tc3d-fade body{background:#0E1C30}
+/* the smooth scroller moves the page itself every frame; the site-wide smooth scroll-behavior would make the browser
+   animate each of those moves too, so the page stalls and then jumps (the original rule was scoped away) */
+html.lenis,html.lenis.lenis-smooth{scroll-behavior:auto!important}html.lenis.lenis-stopped{overflow:hidden}
