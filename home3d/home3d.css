@@ -1134,3 +1134,17 @@ html.tc3d-on .home-main > :not(.home-lower){display:none!important}
 /* the lower native sections and footer scroll over the fixed 3D stage, under its header (like the original main) */
 html.tc3d-on .home-lower,html.tc3d-on .site-footer{position:relative;z-index:5}
 @media (prefers-reduced-motion:reduce){html.tc3d.tc3d-fade .tc3d-root{transition:none}}
+/* Touch screens: a live blur over the moving 3D scene is redrawn every frame and makes scrolling stutter on phones.
+   The same bars and buttons get a slightly denser tint instead, which reads the same at a glance. */
+html.tc3d-touch .tc3d-root header.glass,html.tc3d-touch .tc3d-root header.glass-dark,html.tc3d-touch .tc3d-root header.past,
+html.tc3d-touch .tc3d-root header.tc-solid-dark,html.tc3d-touch .tc3d-root header.tc-solid-paper,
+html.tc3d-touch .tc3d-root .tc-top,html.tc3d-touch .tc3d-root .tc-rail .lb{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html.tc3d-touch .tc3d-root header.glass{background:rgba(243,240,233,.96)!important}
+html.tc3d-touch .tc3d-root header.glass-dark{background:rgba(14,28,48,.93)!important}
+html.tc3d-touch .tc3d-root header.past{background:rgba(14,28,48,.95)!important}
+html.tc3d-touch .tc3d-root header.tc-solid-dark{background:rgba(14,28,48,.94)!important}
+html.tc3d-touch .tc3d-root header.tc-solid-paper{background:rgba(243,240,233,.96)!important}
+html.tc3d-touch .tc3d-root .tc-top{background:rgba(14,28,48,.9)!important}
+html.tc3d-touch .tc3d-root .tc-rail .lb{background:rgba(14,28,48,.92)!important}
+/* the canvas keeps the full screen height, so the address bar sliding never resizes it */
+html.tc3d-touch .tc3d-root .stage #gl{bottom:auto;height:100vh;height:100lvh}

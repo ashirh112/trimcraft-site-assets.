@@ -33,6 +33,35 @@
     : ['js/tc-ink.js', 'js/tc-steps.js', 'ring.js', 'js/tc-boot.js', 'app.js',
       'js/tc-ship.js', 'js/tc-shape.js', 'js/tc-arc.js', 'js/tc-sus.js', 'js/tc-fix.js', 'menu.js'];
 
+  /* Touch screens: the address bar slides in and out while you scroll, which changes the window height and
+     fires resize. The scene would rebuild its canvas and re-measure every part each time, so scrolling hitches.
+     Here the height the scene sees is the full screen height (the same height CSS vh uses), and resizes that
+     only come from the address bar are not passed on. A real change (rotation, new width) still is. */
+  if (coarse) {
+    H.classList.add('tc3d-touch');
+    var probe = D.createElement('div');
+    probe.style.cssText = 'position:fixed;left:0;top:0;width:0;height:100vh;height:100lvh;visibility:hidden;pointer-events:none';
+    H.appendChild(probe);
+    var ihDesc = Object.getOwnPropertyDescriptor(Window.prototype, 'innerHeight') || Object.getOwnPropertyDescriptor(W, 'innerHeight');
+    var rawH = function () { return ihDesc && ihDesc.get ? ihDesc.get.call(W) : H.clientHeight; };
+    var LH = Math.max(probe.offsetHeight || 0, rawH()), lastW = W.innerWidth, skip = false;
+    try { Object.defineProperty(W, 'innerHeight', { configurable: true, get: function () { return Math.max(LH, rawH()); } }); } catch (e) {}
+    // runs before every other resize listener and decides whether this resize is real
+    W.addEventListener('resize', function () {
+      var nw = W.innerWidth;
+      if (nw === lastW) { skip = true; return; }
+      skip = false; lastW = nw; LH = Math.max(probe.offsetHeight || 0, rawH());
+    });
+    var addRaw = W.addEventListener;
+    W.addEventListener = function (type, fn, opt) {
+      if (type === 'resize' && fn) {
+        var f = fn;
+        fn = function (e) { if (skip) return; return typeof f === 'function' ? f.call(this, e) : f.handleEvent(e); };
+      }
+      return addRaw.call(this, type, fn, opt);
+    };
+  }
+
   W.TC3D_BASE = B; W.TC3D_YEAR = Y;
   // the same settings the original pages set in their head
   if (phone) {
