@@ -32,6 +32,8 @@ if (document.documentElement.classList.contains('js')) {
   // forms: the file picker gets a spoken name, radio pills get their own ids
   $$('input[type=file]:not([aria-label])').forEach(function (f) { f.setAttribute('aria-label', 'Artwork file'); });
   $$('input[type=radio][id="radio"]').forEach(function (r, i) { r.id = 'tc-opt-' + (i + 1); });
+  // links that act as buttons (menu, close, filters) are announced as buttons
+  $$('a[href="#"]').forEach(function (a) { a.setAttribute('role', 'button'); });
   $$('[data-vs]').forEach(function (e) { e.style.cssText += ';' + e.getAttribute('data-vs'); });
   $$('[data-v~="stk"]').forEach(function (c, i) { if (!c.style.getPropertyValue('--k')) c.style.setProperty('--k', i); });
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
