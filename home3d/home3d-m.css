@@ -1066,7 +1066,7 @@ html.tc3d .tc3d-root .tc-pgx{position:absolute;top:18px;right:20px;width:44px;he
 
 /* Root states: hidden while it loads, fades in over the native hero, then takes the native story's place. */
 html.tc3d .tc3d-root{position:fixed;top:0;left:0;right:0;height:100vh;overflow:hidden;visibility:hidden;opacity:0;pointer-events:none;z-index:-1}
-html.tc3d.tc3d-fade .tc3d-root{visibility:visible;opacity:1;z-index:2147483000;transition:opacity .45s ease}
+html.tc3d.tc3d-fade .tc3d-root{visibility:visible;opacity:1;z-index:2147483000;transition:opacity .25s ease}
 html.tc3d.tc3d-on .tc3d-root{position:relative;top:auto;left:auto;right:auto;height:auto;overflow:visible;visibility:visible;opacity:1;pointer-events:auto;z-index:auto;transition:none}
 html.tc3d-on .site-chrome,
 html.tc3d-on .home-main > :not(.home-lower){display:none!important}

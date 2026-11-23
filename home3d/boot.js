@@ -33,6 +33,13 @@
     : ['js/tc-ink.js', 'js/tc-steps.js', 'ring.js', 'js/tc-boot.js', 'app.js',
       'js/tc-ship.js', 'js/tc-shape.js', 'js/tc-arc.js', 'js/tc-sus.js', 'js/tc-fix.js', 'menu.js'];
 
+  // every script starts downloading now, side by side; they still run one after another, in order, from the cache
+  SCRIPTS.forEach(function (f) {
+    var l = D.createElement('link');
+    l.rel = 'preload'; l.as = 'script'; l.href = B + f;
+    D.head.appendChild(l);
+  });
+
   /* Touch screens: the address bar slides in and out while you scroll, which changes the window height and
      fires resize. The scene would rebuild its canvas and re-measure every part each time, so scrolling hitches.
      Here the height the scene sees is the full screen height (the same height CSS vh uses), and resizes that
@@ -73,7 +80,7 @@
       W.TCAA = false; W.TC_DPR_CAP = 1.35; W.TC_TEX_SCALE = 0.85; W.TC_SMALL_TEX = true; W.TC_IDLE = true;
       if (coarse || w < 1024) W.TC_NATIVE_SCROLL = true;
     } else { W.TC_DPR_CAP = 2; W.TC_IDLE = true; }
-    try { W.TCQ = !!sessionStorage.getItem('tcv'); if (w >= 820) sessionStorage.setItem('tcv', '1'); } catch (e) { W.TCQ = false; }
+    W.TCQ = true; // the short opening (the same one phones and returning visitors get), so the story starts sooner
   }
 
   var root, done = false, timers = [];
@@ -130,7 +137,7 @@
       H.classList.remove('tc3d-fade', 'tc3d-hold', 'tc3d-lift');
       W.dispatchEvent(new Event('resize'));
       if (coarse) tint();
-    }, 480);
+    }, 260);
   }
 
   /* Phones colour the strip under the browser bars from the page background, not from the 3D scene. While the scene
