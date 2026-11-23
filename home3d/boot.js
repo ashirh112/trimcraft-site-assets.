@@ -83,6 +83,28 @@
     W.TCQ = true; // the short opening (the same one phones and returning visitors get), so the story starts sooner
   }
 
+  /* Laptops and tablets: after the opening, the photos the scene still needs (work cards and the rest) load one at a
+     time in quiet moments. While you scroll they wait, apart from one every 300 ms, so the first scrolls never stall. */
+  if (!phone) {
+    var lastInput = 0;
+    ['wheel', 'scroll', 'keydown', 'touchmove', 'pointerdown'].forEach(function (t) {
+      W.addEventListener(t, function () { lastInput = performance.now(); }, { passive: true });
+    });
+    W.__tcQueue = function () {
+      var lastForced = performance.now();
+      function step() {
+        var q = W.__tcBootQ;
+        if (!q || !q.length || W.__tcDead) return;
+        var now = performance.now();
+        if (now - lastInput < 350 && now - lastForced < 300) { setTimeout(step, 120); return; }
+        lastForced = now;
+        try { q.shift()(); } catch (e) {}
+        if (W.requestIdleCallback) requestIdleCallback(step, { timeout: 400 }); else setTimeout(step, 60);
+      }
+      setTimeout(step, 400);
+    };
+  }
+
   var root, done = false, timers = [];
   function abort() {
     if (done) return; done = true;
