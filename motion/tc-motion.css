@@ -29,15 +29,8 @@ html.js.leaving body::after{animation:tcveilin .5s var(--io) both}
 html.js.leaving body::before{animation:tcfade .3s var(--o) .25s both}
 
 /* ---------- arrival: header, crumbs, headline, lede, buttons, photo, pattern ---------- */
-html.js [data-v~="hd"]{animation:tcfloatin 1.2s var(--o) .2s both}
-html.js [data-v~="hero"] [data-v~="crumbs"]{animation:tcfade .8s var(--o) .3s both}
 .w{display:inline-block;overflow:hidden;vertical-align:top;padding:.06em .04em .2em;margin:-.06em -.04em -.2em}
 .w>span{display:inline-block;will-change:transform}
-html.js [data-v~="hero"] h1 .w>span{animation:tcrise 1.15s var(--o) both;animation-delay:calc(.3s + var(--i) * 60ms)}
-html.js [data-v~="hero"] [data-v~="lede"]{animation:tcfloatin 1.2s var(--o) .55s both}
-html.js [data-v~="hero"] [data-v~="acts"]{animation:tcfloatin 1.2s var(--o) .7s both}
-html.js [data-v~="hero-split"] [data-v~="wrap"]>[data-v~="ph"]{animation:tcclip 1.2s var(--io) .25s both}
-html.js [data-v~="hero-split"] [data-v~="wrap"]>[data-v~="ph"] img{animation:tczoom 1.8s var(--o) .25s both}
 html.js [data-v~="hero"]::after{animation:tcnestin 1.6s var(--o) .6s both,tcdrift 60s linear 2.2s infinite}
 /* the headline keeps a slow float and leans away from the cursor, as on the home page */
 [data-v~="hero"] h1,[data-v~="hero"] [data-v~="lede"]{transform:translate3d(calc(var(--px,0) * -12px),calc(var(--py,0) * -8px),0);transition:transform .9s cubic-bezier(.2,.7,.2,1)}

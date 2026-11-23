@@ -77,7 +77,7 @@ if (document.documentElement.classList.contains('js')) {
   function esc(t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
 
   // headlines: each word in its own mask, so it can rise into place
-  $$('[data-v~="hero"] h1, [data-v~="sec"] h2, [data-v~="chap"] h2, [data-v~="close"] h2, [data-v~="seq-t"] h2, [data-v~="stk"] h2, [data-v~="ht"] h2').forEach(function (el) {
+  $$('[data-v~="sec"] h2, [data-v~="chap"] h2, [data-v~="close"] h2, [data-v~="seq-t"] h2, [data-v~="stk"] h2, [data-v~="ht"] h2').forEach(function (el) {
     if (el.children.length || el.dataset.split) return;
     var t = el.textContent.trim(); if (!t) return;
     el.dataset.split = 1; el.setAttribute('aria-label', t);
