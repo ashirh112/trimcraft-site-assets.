@@ -1177,3 +1177,8 @@ html.tc3d .tc3d-root .mm-pfam{display:block;font-size:12px;font-weight:800;lette
 html.tc3d .tc3d-root .mm-pitem{display:block;font-size:14px;font-weight:600;color:#172B46;padding:5px 8px;border-radius:8px;transition:background .2s}
 html.tc3d .tc3d-root .mm-pitem:hover,html.tc3d .tc3d-root .mm-pfam:hover{background:#F3F0E9}
 html.tc3d .tc3d-root .mm-pitem:focus-visible,html.tc3d .tc3d-root .mm-pfam:focus-visible{outline:2px solid #B66A43;outline-offset:1px}
+html.tc3d .tc3d-root .blk.about .tc-ach{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px;max-width:520px}
+html.tc3d .tc3d-root .blk.about .tc-ach-i{padding:14px 16px 16px;background:#fff;border-radius:10px 22px 10px 10px;box-shadow:0 14px 30px -22px rgba(14,28,48,.5)}
+html.tc3d .tc3d-root .blk.about .tc-ach-i b{display:block;margin-bottom:6px;font:800 19px/1.15 'Manrope',system-ui,sans-serif;letter-spacing:-.02em;color:var(--navy)}
+html.tc3d .tc3d-root .blk.about .tc-ach-i span{display:block;font:500 13.5px/1.45 'Manrope',system-ui,sans-serif;color:var(--slate)}
+@media (max-width:760px){html.tc3d .tc3d-root .blk.about .tc-ach{gap:10px;margin-top:16px}html.tc3d .tc3d-root .blk.about .tc-ach-i{padding:12px 12px 13px}html.tc3d .tc3d-root .blk.about .tc-ach-i b{font-size:16px;margin-bottom:4px}html.tc3d .tc3d-root .blk.about .tc-ach-i span{font-size:12.5px}}
