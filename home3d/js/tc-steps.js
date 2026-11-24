@@ -143,13 +143,14 @@
       var k = +li.dataset.k;
       li.tabIndex = 0; li.setAttribute('role', 'button');
       li.setAttribute('aria-label', 'Show ' + li.textContent.replace(/^\d+/, '').trim());
-      li.addEventListener('click', function (e) { e.stopImmediatePropagation(); toIndex(k); }, true);
+      li.addEventListener('click', function (e) { e.stopImmediatePropagation(); if (Math.abs(rest(k) - scrollY) < 12 && window.__tcProdUrl) { location.href = window.__tcProdUrl(k); return; } toIndex(k); }, true);
       li.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); toIndex(k); } });
     });
     document.querySelectorAll('.pring .tag').forEach(function (t, k) {
       t.addEventListener('click', function (e) {
         e.stopImmediatePropagation();
-        if (Math.abs(rest(k) - scrollY) < 12 && window.__tcBox) { // the product in front opens large
+        if (Math.abs(rest(k) - scrollY) < 12 && window.__tcProdUrl) { location.href = window.__tcProdUrl(k); return; }
+        if (Math.abs(rest(k) - scrollY) < 12 && window.__tcBox) {
           var im = t.querySelector('img'), cap = t.querySelector('figcaption');
           window.__tcBox(im.currentSrc || im.src, cap.querySelector('b').textContent, cap.querySelector('span').textContent, im.alt);
         } else toIndex(k);

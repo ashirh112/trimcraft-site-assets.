@@ -1158,3 +1158,23 @@ html.tc3d-touch.tc3d-fade,html.tc3d-touch.tc3d-fade body{background:#0E1C30}
 /* the smooth scroller moves the page itself every frame; the site-wide smooth scroll-behavior would make the browser
    animate each of those moves too, so the page stalls and then jumps (the original rule was scoped away) */
 html.lenis,html.lenis.lenis-smooth{scroll-behavior:auto!important}html.lenis.lenis-stopped{overflow:hidden}
+/* Numbers: bigger figures that arrive with the statement */
+html.tc3d .tc3d-root .blk.b .big{max-width:1100px;gap:30px;margin-top:34px}
+html.tc3d .tc3d-root .blk.b .big b{font-size:clamp(56px,6.6vw,112px)}
+html.tc3d .tc3d-root .blk.b .big span{font-size:16px}
+@media (max-width:767px){html.tc3d .tc3d-root .blk.b .big{gap:18px 14px;margin-top:24px}html.tc3d .tc3d-root .blk.b .big b{font-size:46px}html.tc3d .tc3d-root .blk.b .big span{font-size:14px}}
+/* Products: the product in front shows that a tap opens its page; a way past the products */
+html.tc3d .tc3d-root .pdrum .plist li[data-k].on b::after{content:" \2192";font-weight:700;opacity:.7}
+html.tc3d .tc3d-root .tc-skipprod{position:fixed;z-index:30;left:var(--pad,40px);bottom:76px;display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 16px;border-radius:999px;font-size:13px;font-weight:700;color:#fff;background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px rgba(255,255,255,.28);text-decoration:none;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .3s,visibility 0s .3s}
+html.tc3d .tc3d-root .tc-skipprod.on{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .3s}
+html.tc3d .tc3d-root .tc-skipprod:hover{background:rgba(255,255,255,.16)}
+html.tc3d .tc3d-root .tc-skipprod:focus-visible{outline:2px solid #e8a56c;outline-offset:3px}
+@media (max-width:767px){html.tc3d .tc3d-root .tc-skipprod{left:auto;right:16px;bottom:auto;top:96px;height:36px;padding:0 14px;font-size:12px}}
+/* Products menu: product names in family columns */
+html.tc3d .tc3d-root .mm-plist{width:900px}
+html.tc3d .tc3d-root .mm-pcols{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 22px}
+html.tc3d .tc3d-root .mm-pcol{display:flex;flex-direction:column;gap:2px}
+html.tc3d .tc3d-root .mm-pfam{display:block;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#B66A43;padding:6px 8px 4px;border-radius:8px}
+html.tc3d .tc3d-root .mm-pitem{display:block;font-size:14px;font-weight:600;color:#172B46;padding:5px 8px;border-radius:8px;transition:background .2s}
+html.tc3d .tc3d-root .mm-pitem:hover,html.tc3d .tc3d-root .mm-pfam:hover{background:#F3F0E9}
+html.tc3d .tc3d-root .mm-pitem:focus-visible,html.tc3d .tc3d-root .mm-pfam:focus-visible{outline:2px solid #B66A43;outline-offset:1px}

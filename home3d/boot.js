@@ -7,10 +7,10 @@
   'use strict';
   var cur = document.currentScript;
   var B = (cur && cur.getAttribute('data-base')) || '';
-  // app.js can come from a newer commit than the photos and styles (data-code), so a code-only update does not make
-  // every photo a first-time download from the file host
+  // code (scripts, styles, stage) can come from a newer commit than the photos (data-code), so a code update does not
+  // make every photo a first-time download from the file host
   var CODE = (cur && cur.getAttribute('data-code')) || B;
-  function src(f) { return (f === 'app.js' ? CODE : B) + f; }
+  function src(f) { return CODE + f; } // scripts, styles and the stage come with the code; photos stay on B
   var D = document, H = D.documentElement, W = window;
   function lift() {
     if (!H.classList.contains('tc3d-hold')) return;
@@ -178,6 +178,7 @@
       H.classList.add('tc3d-on');
       H.classList.remove('tc3d-fade', 'tc3d-hold', 'tc3d-lift');
       W.dispatchEvent(new Event('resize'));
+      restore();
       if (coarse) tint();
     }, 260);
   }
@@ -201,6 +202,57 @@
     run(); setTimeout(q, 900);
   }
 
+  /* Back button: the page remembers where you were in the story when you leave it, and a back (or forward) visit
+     returns you there under the loader instead of starting again from the top. */
+  var KEY = 'tc3d-pos';
+  function savePos() {
+    try { sessionStorage.setItem(KEY, JSON.stringify({ y: Math.round(W.scrollY), w: W.innerWidth, t: Date.now() })); } catch (e) {}
+  }
+  W.addEventListener('pagehide', savePos);
+  D.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (a && !/^#/.test(a.getAttribute('href') || '')) savePos();
+  }, true);
+  function backTarget() {
+    try {
+      var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+      if (!nav || nav.type !== 'back_forward') return 0;
+      var p = JSON.parse(sessionStorage.getItem(KEY) || 'null');
+      if (!p || Date.now() - p.t > 3600e3 || Math.abs(p.w - W.innerWidth) > 40) return 0;
+      return p.y || 0;
+    } catch (e) { return 0; }
+  }
+  function restore() {
+    var y = backTarget();
+    if (!y) return;
+    W.__tcJ = performance.now() + 1500; // the product stepper leaves this jump alone
+    var L = W.__tcLenis;
+    if (L) { try { L.resize(); } catch (e) {} L.scrollTo(y, { immediate: true, force: true }); }
+    else W.scrollTo(0, y);
+  }
+
+  // product pages for the eight products in the products section, in their order
+  var PROD = ['/product-families/paper-boxes', '/products/gift-and-rigid-boxes', '/product-families/corrugated-boxes',
+    '/products/heat-transfer-labels', '/products/pad-prints', '/products/hang-tags', '/products/barcode-stickers', '/products/tissue-paper'];
+  W.__tcProdUrl = function (k) { return PROD[k] || '/all-products'; };
+  function wire() {
+    var sk = D.querySelector('.tc-skipprod'), pd = D.querySelector('.pdrum');
+    // shown while the products are on screen
+    if (sk && pd) (function loop() {
+      if (W.__tcDead) return;
+      var vis = pd.style.visibility === 'visible' && +(pd.style.opacity || 0) > 0.5;
+      if (vis !== sk.classList.contains('on')) sk.classList.toggle('on', vis);
+      setTimeout(loop, 150);
+    })();
+    if (sk) sk.addEventListener('click', function (e) {
+      e.preventDefault(); e.stopPropagation();
+      var P = W.__tcProd, y = P && P.Y ? P.Y(0.52) : 0;
+      if (!y) return;
+      W.__tcJ = performance.now() + 1600;
+      if (W.__tcLenis) W.__tcLenis.scrollTo(y, { duration: 1.1, force: true }); else W.scrollTo({ top: y, behavior: 'smooth' });
+    });
+  }
+
   function start() {
     var restoreW = hook(W), restoreD = hook(D);
     W.setInterval = function () { var id = origInterval.apply(W, arguments); timers.push(id); return id; };
@@ -209,6 +261,7 @@
       clearTimeout(guard);
       cap = false; restoreW(); restoreD(); W.setInterval = origInterval;
       fire('DOMContentLoaded'); fire('load');
+      wire();
       show();
     });
   }
@@ -216,12 +269,12 @@
   H.setAttribute('data-assets', B + 'assets/');
   var link = D.createElement('link');
   link.rel = 'stylesheet';
-  link.href = B + 'home3d' + SFX + '.css';
+  link.href = CODE + 'home3d' + SFX + '.css';
   var cssReady = new Promise(function (res, rej) { link.onload = res; link.onerror = rej; });
   D.head.appendChild(link);
 
   Promise.all([
-    fetch(B + 'stage' + SFX + '.html').then(function (r) { if (!r.ok) throw 0; return r.text(); }),
+    fetch(CODE + 'stage' + SFX + '.html').then(function (r) { if (!r.ok) throw 0; return r.text(); }),
     cssReady
   ]).then(function (r) {
     root = D.createElement('div');

@@ -23,7 +23,7 @@ function frame(){
   if (window.__tcHold) return;
   requestAnimationFrame(frame);
   var E=window.__tcEe;if(E===undefined)return;
-  document.body.classList.toggle('tc-nums',E>.985);
+  document.body.classList.toggle('tc-nums',E>.968);
   var on=E>.9&&E<.975;
   if(on!==shown){shown=on;L.style.display=on?'block':'none';if(!on){TX=null;window.__tcTruckRear=undefined}}
   if(!on)return;
